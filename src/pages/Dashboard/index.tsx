@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Title, Form, Repo, Error } from './styles';
+import { Title, Form, Repo, Error, CleanButton } from './styles';
 import Logo from './assets/pokemon-logo.png';
 import { RepositoryItem } from './components/RepositoryItem';
 import { FiAlertCircle } from 'react-icons/fi';
 import { api } from '../../services/api';
+import { Link } from 'react-router-dom';
 
-interface IRequest {
+interface IPokemon {
   id?: string;
   stats: [
     {
@@ -19,10 +20,18 @@ interface IRequest {
   sprites: {
     front_default: string;
   };
+
+  types: [
+    {
+      type: {
+        name: string;
+      };
+    },
+  ];
 }
 
 export const Dashboard: React.FC = () => {
-  const [data, setData] = useState<IRequest[]>(() => {
+  const [data, setData] = useState<IPokemon[]>(() => {
     const storagePokemons = localStorage.getItem('@Pokelist:pokemons'); // deixando no local storage
 
     if (storagePokemons) {
@@ -36,6 +45,11 @@ export const Dashboard: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPokemonName(e.target.value);
+    console.log(pokemonName);
+  };
+
+  const handleClearPokemons = (): void => {
+    setData([]);
   };
 
   const handleSubmit = async (
@@ -45,21 +59,16 @@ export const Dashboard: React.FC = () => {
 
     const filteredPokemonName = pokemonName?.toLocaleLowerCase();
 
-    if (!filteredPokemonName) {
+    if (!filteredPokemonName || !pokemonName) {
       setInputError('Informe o nome do Pokemon');
       return;
     }
 
-    const response = await api.get<IRequest>(`${filteredPokemonName}`);
+    const response = await api.get<IPokemon>(`${filteredPokemonName}`);
     const pokemon = response.data;
 
-    if (!response.data.name?.includes(filteredPokemonName)) {
-      console.log('esse pokemon já existe');
-      setPokemonName('');
-      return;
-    }
-
     setData([...data, pokemon]);
+    setInputError('');
     setPokemonName('');
   };
 
@@ -77,6 +86,8 @@ export const Dashboard: React.FC = () => {
         <input placeholder="Ex: Pikachu" onChange={handleInputChange} />
         <button type="submit">Adicionar</button>
       </Form>
+      <CleanButton onClick={handleClearPokemons}>Limpar lista</CleanButton>
+
       {inputError && (
         <Error>
           <FiAlertCircle />
@@ -84,16 +95,15 @@ export const Dashboard: React.FC = () => {
         </Error>
       )}
 
-      <Repo>
-        {data.map(pokemon => (
-          <RepositoryItem
-            key={pokemon.name}
-            image={pokemon.sprites.front_default}
-            name={pokemon.name}
-            stats={pokemon.stats}
-          />
-        ))}
-      </Repo>
+      {data.map(pokemon => (
+        <RepositoryItem
+          key={pokemon.name}
+          image={pokemon.sprites.front_default}
+          name={pokemon.name}
+          stats={pokemon.stats}
+          types={pokemon.types}
+        />
+      ))}
     </>
   );
 };

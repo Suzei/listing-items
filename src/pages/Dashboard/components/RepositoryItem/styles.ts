@@ -4,35 +4,47 @@ interface IColors {
   statusColor: number;
 }
 
-export const Container = styled.div``;
-
-export const Content = styled.a`
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 5px;
-  width: 100%;
-  border: 1px solid #444444;
-  padding: 24px;
+export const Container = styled.div`
   transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-20px);
+  }
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+
+  border-radius: 5px;
+  border: 1px solid black;
+  border-radius: 15px;
+  width: 100%;
+  padding: 15px 1px;
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
 
   svg {
     margin-left: auto;
     color: #cbcbd6;
   }
 
-  &:hover {
-    transform: translateX(20px);
-  }
-
   div {
     margin: 0 16px;
-    flex: 1;
+    text-align: center;
   }
 
   img {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
   }
 `;
@@ -52,12 +64,14 @@ export const Type = styled.p`
 `;
 
 export const BaseStatus = styled.p<IColors>`
-  color: ${props => (props.statusColor > 59 ? 'green' : 'red')};
+  color: ${props => (props.statusColor > 59 ? '#138808' : '#e21515')};
   margin-top: 5px;
   margin-left: 5px;
 `;
 
-export const Stats = styled.span`
+export const Types = styled.section`
   display: flex;
-  align-items: center;
+  gap: 20px;
+  flex-direction: row;
+  flex: 1;
 `;

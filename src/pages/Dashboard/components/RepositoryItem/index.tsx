@@ -1,6 +1,7 @@
 import React from 'react';
-import { FiChevronRight } from 'react-icons/fi';
-import { BaseStatus, Container, Content, Pokemon, Stats, Type } from './styles';
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { Container, Content, Pokemon, Types, Type } from './styles';
 
 interface IPokemonInfo {
   name?: string;
@@ -13,30 +14,36 @@ interface IPokemonInfo {
     },
   ];
   image?: string;
+
+  types: [
+    {
+      type: {
+        name: string;
+      };
+    },
+  ];
 }
 
 export const RepositoryItem: React.FC<IPokemonInfo> = ({
   image,
   name,
-  stats,
+  types,
 }) => {
   return (
-    <Container>
-      <Content href="/repositories">
-        <img src={image} alt="Pokemon" />
-        <div>
-          <Pokemon>{name}</Pokemon>
-          {stats.map(item => (
-            <Stats>
-              <Type key={item.base_stat}>{item.stat.name}</Type>
-              <BaseStatus statusColor={item.base_stat}>
-                {item.base_stat}
-              </BaseStatus>
-            </Stats>
-          ))}
-        </div>
-        <FiChevronRight size={19} />
-      </Content>
-    </Container>
+    <Link to={`/pokemons/${name}`}>
+      <Container>
+        <Content>
+          <img src={image} alt="Pokemon" />
+          <div>
+            <Pokemon>{name}</Pokemon>
+            <Types>
+              {types.map(item => (
+                <Type key={item.type.name}>{item.type.name}</Type>
+              ))}
+            </Types>
+          </div>
+        </Content>
+      </Container>
+    </Link>
   );
 };

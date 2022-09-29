@@ -33,16 +33,27 @@ export const Error = styled.div`
 
 export const Repo = styled.div`
   display: grid;
-  grid-template-columns: 350px 350px;
+  grid-template-columns: 170px 170px 170px;
   flex: 1;
-  flex-wrap: wrap;
+
   margin-top: 80px;
-  max-width: 700px;
+  max-width: 500px;
   gap: 20px;
 
   & + a {
     margin-top: 16px;
   }
+`;
+
+export const CleanButton = styled.button`
+  color: white;
+  background: #c92222;
+  border-radius: 10px;
+  padding: 10px;
+  border: 0;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  align-self: flex-end;
 `;
 
 export const Form = styled.form<IError>`

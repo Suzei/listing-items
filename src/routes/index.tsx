@@ -6,8 +6,8 @@ import { Repo } from '../pages/Repo';
 export const Routes: React.FC = () => {
   return (
     <Switch>
-      <Route component={Dashboard} path="/" exact />
-      <Route component={Repo} path="/repositories" exact />
+      <Route path="/" component={Dashboard} exact />
+      <Route path="/pokemons/:pokemon+" component={Repo} />
     </Switch>
   );
 };
